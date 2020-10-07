@@ -56,7 +56,8 @@ export default {
     return {
       enteredName: '',
       chosenRating: null,
-      invalidInput: false
+      invalidInput: false,
+      error: null
     };
   },
   emits: ['survey-submit'],
@@ -68,10 +69,23 @@ export default {
       }
       this.invalidInput = false;
 
-      axios.post('https://vue-http-demo-bef34.firebaseio.com/surveys.json', {
-        name: this.enteredName,
-        rating: this.chosenRating
-      });
+      this.error = null;
+      axios
+        .post('https://vue-http-demo-bef34.firebaseio.com/surveys.json', {
+          name: this.enteredName,
+          rating: this.chosenRating
+        })
+        .then(response => {
+          if (response.ok) {
+            //...
+          } else {
+            throw new Error('Could not save data!');
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          this.error = error.message;
+        });
 
       this.enteredName = '';
       this.chosenRating = null;
