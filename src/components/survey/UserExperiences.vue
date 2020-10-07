@@ -50,8 +50,11 @@ export default {
           }
           this.results = results;
         });
-      //GET is default method
     }
+  },
+  mounted() {
+    console.log('heeeey');
+    this.loadExperiences();
   }
 };
 </script>
